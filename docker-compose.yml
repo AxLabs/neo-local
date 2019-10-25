@@ -11,7 +11,8 @@ services:
     depends_on:
       - neo-faucet
       - neo-cli-privatenet-1
-      - neo-python
+      - neo-python1
+      - neo-python2
       - neo-scan
       - postgres
     environment:
@@ -83,8 +84,8 @@ services:
         ./container-override-files/neo-faucet/protocol.json:/usr/src/app/assets/protocol.json
     restart: always
 
-  neo-python:
-    container_name: neo-python
+  neo-python1:
+    container_name: neo-python1
     depends_on:
       - neo-cli-privatenet-1
       - neo-scan
@@ -99,6 +100,21 @@ services:
       - >-
         ./container-override-files/neo-python/protocol.privnet.json:/neo-python/neo/data/protocol.privnet.json
 
+  neo-python2:
+    container_name: neo-python2
+    depends_on:
+      - neo-cli-privatenet-1
+      - neo-scan
+    image: 'cityofzion/neo-python:v0.8.4'
+    networks:
+      - inside
+      - host-exposed
+    tty: true
+    volumes:
+      - './smart-contracts:/smart-contracts'
+      - './wallets:/wallets'
+      - >-
+        ./container-override-files/neo-python/protocol.privnet.json:/neo-python/neo/data/protocol.privnet.json
   neo-scan:
     container_name: neo-scan
     depends_on:
