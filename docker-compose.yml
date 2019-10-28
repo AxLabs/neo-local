@@ -115,6 +115,25 @@ services:
       - './wallets:/wallets'
       - >-
         ./container-override-files/neo-python/protocol.privnet.json:/neo-python/neo/data/protocol.privnet.json
+
+  neo-python3:
+    container_name: neo-python3
+    depends_on:
+      - neo-cli-privatenet-1
+      - neo-scan
+    image: 'cityofzion/neo-python:v0.8.4'
+    networks:
+      - inside
+      - host-exposed
+    tty: true
+    ports:
+      - '30337:30337'
+    volumes:
+      - './smart-contracts:/smart-contracts'
+      - './wallets:/wallets'
+      - >-
+        ./container-override-files/neo-python/protocol.privnet.json:/neo-python/neo/data/protocol.privnet.json
+
   neo-scan:
     container_name: neo-scan
     depends_on:
